@@ -1,0 +1,46 @@
+# Implementation of live-electronics for Griseys Prologue
+# by Levin Eric Zimmermann
+
+# This program is free software: you can redistribute it and/or modify  
+# it under the terms of the GNU General Public License as published by  
+# the Free Software Foundation, version 3.
+#
+# This program is distributed in the hope that it will be useful, but 
+# WITHOUT ANY WARRANTY; without even the implied warranty of 
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License 
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+###########################################
+#                CONFIGURE                #
+###########################################
+
+[configure]
+name = "prologue"
+
+[configure.input]
+midi_control_list = [[1, 0]]
+
+[configure.input.channel_mapping]
+0 = 0
+
+# Configure Piano
+[configure.module.convolution_reverb.0]
+impulse_path = "impulse_responses/piano2.wav"
+
+[configure.module.convolution_reverb.0.default_dict.channel_mapping]
+0 = 0
+
+[configure.module.convolution_reverb.0.default_dict.decibel]
+midi_control_index = 0
+midi_range = [-120, -16]
+
+# Configure Snare
+
+###########################################
+#                 CUES                    #
+###########################################
+
+[cue.1.convolution_reverb.0]
