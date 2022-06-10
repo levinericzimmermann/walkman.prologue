@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+qjackctl --active-patchbay=etc/qjackctl/prologue-simulation.xml
+{{ run_walkman }} &
+echo "Sleep for 5 seconds until simulation starts"
+sleep 5s
+mpv --ao=jack --jack-connect=no --volume=100 prologue-simulation.wav

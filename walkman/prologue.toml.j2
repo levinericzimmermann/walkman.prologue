@@ -1,0 +1,74 @@
+# Implementation of live-electronics for Griseys Prologue
+# by Levin Eric Zimmermann
+
+# This program is free software: you can redistribute it and/or modify  
+# it under the terms of the GNU General Public License as published by  
+# the Free Software Foundation, version 3.
+#
+# This program is distributed in the hope that it will be useful, but 
+# WITHOUT ANY WARRANTY; without even the implied warranty of 
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License 
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+###########################################
+#                CONFIGURE                #
+###########################################
+
+{% set resonator_count = 5 %}
+
+[configure]
+name = "prologue"
+
+[configure.input]
+midi_control_list = [
+    {% for index in range(resonator_count) %}
+    # MIDI_CONTROL_NUMBER, MIDI_CHANNEL
+    [{{ index + 48 }}, 1],
+    {% endfor %}
+]
+
+[configure.input.channel_mapping]
+0 = 0
+
+[configure.output.channel_mapping]
+{# FOR STEREO SIMULATION #}
+{% for channel_index in range(resonator_count) %}
+{{ channel_index }} = {{ channel_index % 2 }}
+{% endfor %}
+
+
+[configure.module.convolution_reverb]
+replication_count = 3
+
+
+{% for impulse_path in [
+    "impulse_responses/bucket0.wav",
+    "impulse_responses/double_bass.wav",
+    "impulse_responses/piano2.wav",
+    "impulse_responses/piano2.wav",
+    "impulse_responses/piano2.wav",
+] %}
+
+{% set convolution_reverb_index = loop.index - 1 %}
+
+[configure.module.convolution_reverb.{{ convolution_reverb_index }}]
+impulse_path = "{{ impulse_path }}"
+
+[configure.module.convolution_reverb.{{ convolution_reverb_index }}.default_dict.channel_mapping]
+0 = {{ convolution_reverb_index }}
+# 0 = 0
+
+[configure.module.convolution_reverb.{{ convolution_reverb_index }}.default_dict.decibel]
+midi_control_index = {{ convolution_reverb_index }}
+midi_range = [-120, 0]
+
+# CUE
+[cue.1.convolution_reverb.{{ convolution_reverb_index }}]
+
+{% endfor %}
+
+
+
