@@ -17,7 +17,13 @@
 #                CONFIGURE                #
 ###########################################
 
+{# SET GLOBAL VARIABLES #}
+
 {% set resonator_count = 5 %}
+
+{# The first midi control number for the volume control #}
+{% set midi_control_number_offset = 48 %}
+
 
 [configure]
 name = "prologue"
@@ -26,7 +32,7 @@ name = "prologue"
 midi_control_list = [
     {% for index in range(resonator_count) %}
     # MIDI_CONTROL_NUMBER, MIDI_CHANNEL
-    [{{ index + 48 }}, 1],
+    [{{ index + midi_control_number_offset }}, 1],
     {% endfor %}
 ]
 
@@ -69,6 +75,3 @@ midi_range = [-120, 0]
 [cue.1.convolution_reverb.{{ convolution_reverb_index }}]
 
 {% endfor %}
-
-
-
