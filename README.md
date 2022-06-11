@@ -4,8 +4,8 @@ This is an implementation of live electronics for Griseys Prologue realized in [
 
 ## Installation
 
-Bootstrap buildout and then run 'bin/buildout'.
+Bootstrap buildout and then run `bin/buildout`.
 
 ## Dependency
 
-For running the simulation a global installation of mpv is needed.
+For running the simulation a global installation of `mpv` is needed.
