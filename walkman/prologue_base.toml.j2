@@ -19,7 +19,23 @@
 
 {# SET GLOBAL VARIABLES #}
 
-{% set resonator_count = 5 %}
+{# IMPULSE RESPONSES #}
+
+{#      1. PALME        #}
+{#      2. PIANO        #}
+{#      3. TAM-TAM      #}
+{#      4. METALIC      #}
+{#      5. SNARE DRUM   #}
+
+{% set impulse_path_list = [
+    "impulse_responses/double_bass.wav",
+    "impulse_responses/piano0.wav",
+    "impulse_responses/vietnamese_gong_big_2.wav",
+    "impulse_responses/metal_gong_bronze_small.wav",
+    "impulse_responses/vietnamese_gong_big_3.wav",
+] %}
+
+{% set resonator_count = impulse_path_list|length %}
 
 {# The first midi control number for the volume control #}
 {% set midi_control_number_offset = 48 %}
@@ -46,14 +62,7 @@ midi_control_list = [
 [configure.module.convolution_reverb]
 replication_count = {{ resonator_count }}
 
-
-{% for impulse_path in [
-    "impulse_responses/bucket0.wav",
-    "impulse_responses/double_bass.wav",
-    "impulse_responses/piano2.wav",
-    "impulse_responses/piano2.wav",
-    "impulse_responses/piano2.wav",
-] %}
+{% for impulse_path in impulse_path_list %}
 
 {% set convolution_reverb_index = loop.index - 1 %}
 
