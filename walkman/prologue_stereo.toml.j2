@@ -1,0 +1,8 @@
+{% extends "prologue_base.toml.j2" %}
+
+{% block output_channel_mapping %}
+{# FOR STEREO SIMULATION #}
+{% for channel_index in range(resonator_count) %}
+{{ channel_index }} = {{ channel_index % 2 }}
+{% endfor %}
+{% endblock %}
