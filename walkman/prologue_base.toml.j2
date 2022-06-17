@@ -27,19 +27,43 @@
 {#      4. METALIC      #}
 {#      5. SNARE DRUM   #}
 
+# "impulse_responses/vietnamese_gong_big_2.wav"
+
 {% set impulse_path_list = [
-    "impulse_responses/double_bass.wav",
-    "impulse_responses/piano0.wav",
-    "impulse_responses/vietnamese_gong_big_2.wav",
-    "impulse_responses/metal_gong_bronze_small.wav",
+    "impulse_responses/double_bass-norm.wav",
+    "impulse_responses/WOOD_Impulse_Response_12A-norm.wav",
     "impulse_responses/vietnamese_gong_big_3.wav",
+    "impulse_responses/metal_gong_bronze_small.wav",
+    "impulse_responses/Bath_norm.wav"
 ] %}
+
+{% set minima_decibel_list = [-30, -30, -30, -30, -30] %}
+{% set maxima_decibel_list = [7, 13, 12, 12, 12] %}
+
+{# The minimal decibel value #}
+{% set midi_range_minima_list = minima_decibel_list %}
+
+{# The maximal decibel values #}
+{% set midi_range_maxima_list = maxima_decibel_list %}
 
 {% set resonator_count = impulse_path_list|length %}
 
 {# The first midi control number for the volume control #}
 {% set midi_control_number_offset = 48 %}
 
+{%- macro get_decibel(convolution_reverb_index, percentage=100) -%}
+    {%- set minima_decibel = minima_decibel_list[convolution_reverb_index] -%}
+    {%- set maxima_decibel = maxima_decibel_list[convolution_reverb_index] -%}
+    {{- ((maxima_decibel - minima_decibel) * (percentage / 100)) + minima_decibel -}}
+{%- endmacro -%}
+
+{%- macro rise(convolution_reverb_index, duration, before=30, after=100) -%}
+    [[0, {{- get_decibel(convolution_reverb_index, before) -}}], [{{ duration }}, {{- get_decibel(convolution_reverb_index, after) -}}]]
+{%- endmacro -%}
+
+{% macro fall(convolution_reverb_index, duration, before=100, after=30) %}
+    {{- rise(convolution_reverb_index, duration, before, after) -}}
+{% endmacro %}
 
 [configure]
 name = "prologue"
@@ -65,19 +89,53 @@ replication_count = {{ resonator_count }}
 {% for impulse_path in impulse_path_list %}
 
 {% set convolution_reverb_index = loop.index - 1 %}
+{% set minima_decibel = midi_range_minima_list[convolution_reverb_index] %}
 
 [configure.module.convolution_reverb.{{ convolution_reverb_index }}]
 impulse_path = "{{ impulse_path }}"
+decibel_threshold = {{ minima_decibel + 2 }}
+fade_in_duration = 1
+fade_out_duration = 5
 
 [configure.module.convolution_reverb.{{ convolution_reverb_index }}.default_dict.channel_mapping]
 0 = {{ convolution_reverb_index }}
-# 0 = 0
 
 [configure.module.convolution_reverb.{{ convolution_reverb_index }}.default_dict.decibel]
 midi_control_index = {{ convolution_reverb_index }}
-midi_range = [-120, 0]
-
-# CUE
-[cue.1.convolution_reverb.{{ convolution_reverb_index }}]
+midi_range = [
+    {{ minima_decibel }},
+    {{ midi_range_maxima_list[convolution_reverb_index] }}
+]
 
 {% endfor %}
+
+# ##################### CUEs ################# #
+# Cues are set according to annotated score version of Eric Daubresse from 2005
+
+
+# CUE 1
+# (empty start)
+[cue.1]
+
+
+# CUE 2
+[cue.2.convolution_reverb.0.decibel]
+value = {{ rise(0, 8) }}
+
+
+# CUE 3
+[cue.3.convolution_reverb.0.decibel]
+value = {{ get_decibel(0) }}
+
+[cue.3.convolution_reverb.1.decibel]
+value = {{ rise(1, 5) }}
+
+
+# CUE 4
+[cue.4.convolution_reverb.0.decibel]
+value = {{ get_decibel(0) }}
+
+
+# CUE 5
+[cue.5.convolution_reverb.1.decibel]
+value = {{ get_decibel(1) }}
