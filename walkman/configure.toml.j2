@@ -1,0 +1,125 @@
+# Implementation of live-electronics for Griseys Prologue
+# by Levin Eric Zimmermann
+
+# This program is free software: you can redistribute it and/or modify  
+# it under the terms of the GNU General Public License as published by  
+# the Free Software Foundation, version 3.
+#
+# This program is distributed in the hope that it will be useful, but 
+# WITHOUT ANY WARRANTY; without even the implied warranty of 
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License 
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+###########################################
+#                CONFIGURE                #
+###########################################
+
+
+{% from 'globals.j2' import
+    impulse_path_list,
+    minima_decibel_list,
+    maxima_decibel_list,
+    resonator_count,
+    midi_control_number_offset
+%}
+
+[configure]
+name = "prologue"
+
+[configure.audio]
+channel_count = 5
+
+[configure.module.audio_input.viola]
+decibel = "midi_control_input.master"
+input_channel_index = 0
+
+
+{% for midi_control_input_name in [
+    "master", "convolution_reverb_prologue", "amplification", "amplification_reverb"
+] %}
+
+{% set midi_control_index = loop.index - 1 %}
+
+[configure.module.midi_control_input.{{ midi_control_input_name }}]
+midi_control_number = {{ midi_control_number_offset + midi_control_index }}
+midi_channel = 0
+
+[configure.module.midi_control_input.{{ midi_control_input_name }}.default_dict]
+minima = -80
+maxima = 12
+{% endfor %}
+
+[configure.module.mixer.master_output]
+send_to_physical_output = true
+audio_input_0 = "mixer.convolution_reverb"
+audio_input_1 = "mixer.viola"
+
+[configure.module.mixer.master_output.channel_mapping]
+{% block output_channel_mapping %}
+{% endblock output_channel_mapping %}
+
+[configure.module.mixer.convolution_reverb]
+{% for resonator_index in range(resonator_count) %}
+audio_input_{{- resonator_index -}} = "butterworth_highpass_filter.{{ resonator_index }}"
+{% endfor %}
+
+[configure.module.mixer.viola]
+audio_input_0 = "amplification.viola"
+audio_input_1 = "waveguide_reverb.viola"
+
+[configure.module.mixer.viola.channel_mapping]
+0 = {{ range(resonator_count)|list }}
+
+[configure.module.filter.viola]
+audio_input = "audio_input.viola"
+filter_type = "highpass"
+stages = 4
+
+[configure.module.filter.viola.default_dict]
+decibel = 0
+frequency = 100
+q = 4
+
+[configure.module.amplification.viola]
+decibel = "midi_control_input.amplification"
+audio_input = "filter.viola"
+fade_in_duration = 3
+fade_out_duration = 4
+
+[configure.module.waveguide_reverb.viola]
+decibel = "midi_control_input.amplification_reverb"
+audio_input = "filter.viola"
+
+[configure.module.waveguide_reverb.viola.default_dict]
+feedback = 0.8
+cutoff_frequency = 9000
+
+{% for impulse_path in impulse_path_list %}
+
+{% set convolution_reverb_index = loop.index - 1 %}
+{% set minima_decibel = minima_decibel_list[convolution_reverb_index] %}
+
+[configure.module.butterworth_highpass_filter.{{ convolution_reverb_index }}]
+decibel = "midi_control_input.convolution_reverb_prologue"
+audio_input = "convolution_reverb_prologue.{{ convolution_reverb_index }}"
+
+[configure.module.butterworth_highpass_filter.{{ convolution_reverb_index }}.default_dict]
+frequency = 140
+
+[configure.module.convolution_reverb_prologue.{{ convolution_reverb_index }}]
+audio_input = "filter.viola"
+impulse_path = "{{ impulse_path }}"
+fade_in_duration = 3
+fade_out_duration = 3
+
+[configure.module.convolution_reverb_prologue.{{ convolution_reverb_index }}.default_dict.channel_mapping]
+0 = {{ convolution_reverb_index }}
+
+{% endfor %}
+
+
+{% block cues %}
+{% endblock cues %}

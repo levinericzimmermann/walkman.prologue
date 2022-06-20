@@ -1,0 +1,41 @@
+{# SET GLOBAL VARIABLES #}
+
+{# IMPULSE RESPONSES #}
+
+{#      1. PALME        #}
+{#      2. PIANO        #}
+{#      3. TAM-TAM      #}
+{#      4. METALIC      #}
+{#      5. SNARE DRUM   #}
+
+# "impulse_responses/vietnamese_gong_big_2.wav"
+
+{% set impulse_path_list = [
+    "impulse_responses/guitar1.wav",
+    "impulse_responses/WOOD_Impulse_Response_12A-norm.wav",
+    "impulse_responses/vietnamese_gong_big_3.wav",
+    "impulse_responses/metal_gong_bronze_small.wav",
+    "impulse_responses/Bath_norm.wav"
+] %}
+
+{% set minima_decibel_list = [-12, -12, -12, -11, -11] %}
+{% set maxima_decibel_list = [12, 6.5, 15, 10, 15] %}
+
+{% set resonator_count = impulse_path_list|length %}
+
+{# The first midi control number for the volume control #}
+{% set midi_control_number_offset = 48 %}
+
+{%- macro get_decibel(convolution_reverb_index, percentage=100) -%}
+    {%- set minima_decibel = minima_decibel_list[convolution_reverb_index] -%}
+    {%- set maxima_decibel = maxima_decibel_list[convolution_reverb_index] -%}
+    {{- ((maxima_decibel - minima_decibel) * (percentage / 100)) + minima_decibel -}}
+{%- endmacro -%}
+
+{%- macro rise(convolution_reverb_index, duration, before=0, after=100) -%}
+    [[0, {{- get_decibel(convolution_reverb_index, before) -}}], [{{ duration }}, {{- get_decibel(convolution_reverb_index, after) -}}]]
+{%- endmacro -%}
+
+{% macro fall(convolution_reverb_index, duration, before=100, after=0) %}
+    {{- rise(convolution_reverb_index, duration, before, after) -}}
+{% endmacro %}
