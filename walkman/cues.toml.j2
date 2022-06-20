@@ -46,7 +46,10 @@ value = {{ get_decibel(2, 60) }}
 value = {{ get_decibel(0) }}
 
 [cue.4.convolution_reverb_prologue.2.decibel]
-value = {{ fall(2, 7) }}
+value = {{ fall(2, 20) }}
+
+[cue.4.convolution_reverb_prologue.3.decibel]
+value = {{ rise(3, 20) }}
 
 
 # CUE 5
@@ -256,7 +259,7 @@ value = {{ get_decibel(1) }}
 
 
 # CUE 32
-{% set cue_32_duration = 11 %}
+{% set cue_32_duration = 16 %}
 
 [cue.32.convolution_reverb_prologue.0.decibel]
 value = {{ fall(0, cue_32_duration, after=30) }}
@@ -918,6 +921,14 @@ value = {{ get_decibel(2) }}
 value = {{ get_decibel(3) }}
 
 
+# CUE 102
+[cue.102.convolution_reverb_prologue.2.decibel]
+value = {{ get_decibel(1) }}
+
+[cue.102.convolution_reverb_prologue.3.decibel]
+value = {{ get_decibel(2) }}
+
+
 # CUE 103
 [cue.103.convolution_reverb_prologue.0.decibel]
 value = {{ get_decibel(0) }}
@@ -1030,7 +1041,7 @@ value = {{ get_decibel(2) }}
 value = {{ get_decibel(3) }}
 
 [cue.113.convolution_reverb_prologue.4.decibel]
-value = {{ fall(4, 4) }}
+value = {{ fall(4, 9) }}
 
 
 # CUE 114
@@ -1041,7 +1052,7 @@ value = {{ get_decibel(0) }}
 value = {{ get_decibel(1) }}
 
 [cue.114.convolution_reverb_prologue.2.decibel]
-value = {{ fall(2, 3) }}
+value = {{ fall(2, 10) }}
 
 [cue.114.convolution_reverb_prologue.3.decibel]
 value = {{ get_decibel(3) }}
@@ -1052,7 +1063,7 @@ value = {{ get_decibel(3) }}
 value = {{ get_decibel(0) }}
 
 [cue.115.convolution_reverb_prologue.1.decibel]
-value = {{ fall(1, 3) }}
+value = {{ fall(1, 10) }}
 
 [cue.115.convolution_reverb_prologue.3.decibel]
 value = {{ get_decibel(3) }}
@@ -1063,7 +1074,7 @@ value = {{ get_decibel(3) }}
 value = {{ get_decibel(0) }}
 
 [cue.116.convolution_reverb_prologue.3.decibel]
-value = {{ fall(3, 3) }}
+value = {{ fall(3, 10) }}
 
 
 # CUE 117
