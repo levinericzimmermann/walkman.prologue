@@ -1,0 +1,19 @@
+[buildout]
+parts = walkman
+versions = versions
+develop = ../walkman_modules.convolution_reverb_prologue/
+
+[walkman]
+recipe = zc.recipe.egg
+eggs =
+    audiowalkman
+    {% for module in module_dict.keys() %}
+    {{ module }}
+    {% endfor %}
+
+[versions]
+audiowalkman = {{ audiowalkman_version }}
+{% for module, version in module_dict.items() %}
+{{ module }} = {{ version }}
+{% endfor %}
+
