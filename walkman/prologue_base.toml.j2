@@ -37,8 +37,8 @@
     "impulse_responses/Bath_norm.wav"
 ] %}
 
-{% set minima_decibel_list = [-25, -25, -25, -25, -25] %}
-{% set maxima_decibel_list = [7, 14, 13, 13, 12] %}
+{% set minima_decibel_list = [-15, -21, -15, -12, -15] %}
+{% set maxima_decibel_list = [12, 6.5, 15, 10, 15] %}
 
 {# The minimal decibel value #}
 {% set midi_range_minima_list = minima_decibel_list %}
@@ -57,55 +57,93 @@
     {{- ((maxima_decibel - minima_decibel) * (percentage / 100)) + minima_decibel -}}
 {%- endmacro -%}
 
-{%- macro rise(convolution_reverb_index, duration, before=10, after=100) -%}
+{%- macro rise(convolution_reverb_index, duration, before=20, after=100) -%}
     [[0, {{- get_decibel(convolution_reverb_index, before) -}}], [{{ duration }}, {{- get_decibel(convolution_reverb_index, after) -}}]]
 {%- endmacro -%}
 
-{% macro fall(convolution_reverb_index, duration, before=100, after=10) %}
+{% macro fall(convolution_reverb_index, duration, before=100, after=30) %}
     {{- rise(convolution_reverb_index, duration, before, after) -}}
 {% endmacro %}
 
 [configure]
 name = "prologue"
 
-[configure.input]
-midi_control_list = [
-    {% for index in range(resonator_count) %}
-    # MIDI_CONTROL_NUMBER, MIDI_CHANNEL
-    [{{ index + midi_control_number_offset }}, 1],
-    {% endfor %}
-]
+[configure.audio]
+channel_count = 5
 
-[configure.input.channel_mapping]
-0 = 0
+[configure.module.audio_input.viola]
+input_channel_index = 0
 
-[configure.output.channel_mapping]
+[configure.module.mixer.master_output]
+send_to_physical_output = true
+audio_input_0 = "mixer.convolution_reverb"
+audio_input_1 = "mixer.viola"
+
+[configure.module.mixer.master_output.channel_mapping]
 {% block output_channel_mapping %}
 {% endblock output_channel_mapping %}
 
-[configure.module.convolution_reverb]
-replication_count = {{ resonator_count }}
+[configure.module.mixer.convolution_reverb]
+{% for resonator_index in range(resonator_count) %}
+audio_input_{{- resonator_index -}} = "convolution_reverb.{{ resonator_index }}"
+{% endfor %}
+
+[configure.module.mixer.viola]
+audio_input_0 = "amplification.viola"
+audio_input_1 = "waveguide_reverb.viola"
+
+[configure.module.mixer.viola.channel_mapping]
+0 = {{ range(resonator_count)|list }}
+
+[configure.module.filter.viola]
+audio_input = "audio_input.viola"
+filter_type = "highpass"
+stages = 4
+
+[configure.module.filter.viola.default_dict]
+decibel = 0
+frequency = 100
+q = 4
+
+[configure.module.amplification.viola]
+audio_input = "filter.viola"
+fade_in_duration = 3
+fade_out_duration = 4
+
+[configure.module.waveguide_reverb.viola]
+audio_input = "amplification.viola"
 
 {% for impulse_path in impulse_path_list %}
 
 {% set convolution_reverb_index = loop.index - 1 %}
 {% set minima_decibel = midi_range_minima_list[convolution_reverb_index] %}
 
+[configure.module.filter.{{ convolution_reverb_index }}]
+audio_input = "convolution_reverb.{{ convolution_reverb_index }}"
+filter_type = "bandstop"
+stages = 3
+
+[configure.module.filter.{{ convolution_reverb_index }}.default_dict]
+decibel = 0
+frequency = 60
+q = 3
+
 [configure.module.convolution_reverb.{{ convolution_reverb_index }}]
+audio_input = "filter.viola"
+# audio_input = "audio_input.viola"
 impulse_path = "{{ impulse_path }}"
-decibel_threshold = {{ minima_decibel + 2 }}
-fade_in_duration = 1.25
-fade_out_duration = 5
+fade_in_duration = 3
+fade_out_duration = 3
 
 [configure.module.convolution_reverb.{{ convolution_reverb_index }}.default_dict.channel_mapping]
 0 = {{ convolution_reverb_index }}
 
-[configure.module.convolution_reverb.{{ convolution_reverb_index }}.default_dict.decibel]
-midi_control_index = {{ convolution_reverb_index }}
-midi_range = [
-    {{ minima_decibel }},
-    {{ midi_range_maxima_list[convolution_reverb_index] }}
-]
+# [configure.module.convolution_reverb.{{ convolution_reverb_index }}.default_dict.decibel]
+# midi_control_index = {{ convolution_reverb_index }}
+# midi_range = [
+#     {{ minima_decibel }},
+#     {{ midi_range_maxima_list[convolution_reverb_index] }}
+# ]
 
 {% endfor %}
 
@@ -117,16 +155,26 @@ midi_range = [
 # ############################################ #
 
 
+{% for cue_index in range(117) %}
+[cue.{{ cue_index + 1 }}.amplification.viola]
+{% endfor %}
+
+
 # CUE 1
 # (empty start)
 [cue.1]
 
 
 # CUE 2
-{% set cue_2_duration = 8 %}
+{% set cue_2_duration = 15 %}
 
 [cue.2.convolution_reverb.0.decibel]
 value = {{ rise(0, cue_2_duration) }}
+# envelope_type = "exponential"
+
+[cue.2.convolution_reverb.3.decibel]
+value = {{ rise(3, cue_2_duration) }}
+# envelope_type = "exponential"
 
 
 # CUE 3
@@ -828,7 +876,7 @@ value = {{ get_decibel(3) }}
 
 
 # CUE 84
-{% set cue_84_duration = 3.5 %}
+{% set cue_84_duration = 4 %}
 
 [cue.84.convolution_reverb.0.decibel]
 value = {{ fall(0, cue_84_duration) }}
