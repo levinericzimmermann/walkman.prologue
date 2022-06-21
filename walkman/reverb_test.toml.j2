@@ -1,0 +1,22 @@
+{% extends "reverb_test_base.toml.j2" %}
+
+{% block output_channel_mapping %}
+# Channel mapping is organised that
+# in the center there is the snare next to
+# the viola player.
+#
+# Then gong and metallic are at on the left/right side
+# Piano and Palme are left-center/right-center
+# 0 = 1
+# 1 = 4
+# 2 = 0
+# 3 = 5
+# 4 = 2
+
+0 = 2
+1 = 3
+2 = 0
+3 = 4
+4 = 1
+
+{% endblock %}
