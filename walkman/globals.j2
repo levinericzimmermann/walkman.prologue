@@ -18,8 +18,10 @@
     "impulse_responses/44100/bath1.wav"
 ] %}
 
-{% set minima_decibel_list = [-12, -12, -12, -11, -11] %}
-{% set maxima_decibel_list = [12, 6.5, 15, 10, 15] %}
+{% set default_balance_list = [0.5, 0.5, 0.2, 0.3, 0.3] %}
+
+{% set minima_decibel_list = [-12, -12, -14, -11, -11] %}
+{% set maxima_decibel_list = [12, 6.5, 7, 10, 8] %}
 
 {% set resonator_count = impulse_path_list|length %}
 

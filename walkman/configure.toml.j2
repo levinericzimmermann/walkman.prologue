@@ -23,7 +23,8 @@
     minima_decibel_list,
     maxima_decibel_list,
     resonator_count,
-    midi_control_number_offset
+    midi_control_number_offset,
+    default_balance_list
 %}
 
 [configure]
@@ -54,17 +55,20 @@ maxima = 12
 
 [configure.module.mixer.master_output]
 send_to_physical_output = true
-audio_input_0 = "mixer.convolution_reverb"
-audio_input_1 = "mixer.viola"
+audio_input_0 = "mixer.viola"
+{% for resonator_index in range(resonator_count) %}
+audio_input_{{- loop.index -}} = "butterworth_highpass_filter.{{ resonator_index }}"
+# audio_input_{{- loop.index -}} = "convolution_reverb_prologue.{{ resonator_index }}"
+{% endfor %}
+
+{% for channel_index in range(resonator_count) %}
+[configure.module.mixer.master_output.default_dict.audio_input_{{- loop.index -}}_channel_mapping]
+0 = {{ channel_index }}
+{% endfor %}
 
 [configure.module.mixer.master_output.channel_mapping]
 {% block output_channel_mapping %}
 {% endblock output_channel_mapping %}
-
-[configure.module.mixer.convolution_reverb]
-{% for resonator_index in range(resonator_count) %}
-audio_input_{{- resonator_index -}} = "butterworth_highpass_filter.{{ resonator_index }}"
-{% endfor %}
 
 [configure.module.mixer.convolution_reverb.channel_mapping]
 {% for resonator_index in range(resonator_count) %}
@@ -83,25 +87,22 @@ audio_input_1 = "waveguide_reverb.viola"
 [configure.module.mixer.viola.channel_mapping]
 0 = {{ range(resonator_count)|list }}
 
-[configure.module.filter.viola]
+[configure.module.butterworth_highpass_filter.viola]
 audio_input = "audio_input.viola"
-filter_type = "highpass"
-stages = 4
 
-[configure.module.filter.viola.default_dict]
-decibel = 0
+[configure.module.butterworth_highpass_filter.viola.default_dict]
 frequency = 100
-q = 4
 
 [configure.module.amplification.viola]
 decibel = "midi_control_input.amplification"
-audio_input = "filter.viola"
+audio_input = "butterworth_highpass_filter.viola"
+# audio_input = "audio_input.viola"
 fade_in_duration = 3
 fade_out_duration = 4
 
 [configure.module.waveguide_reverb.viola]
 decibel = "midi_control_input.amplification_reverb"
-audio_input = "filter.viola"
+audio_input = "audio_input.viola"
 
 [configure.module.waveguide_reverb.viola.default_dict]
 feedback = 0.8
@@ -120,10 +121,14 @@ audio_input = "convolution_reverb_prologue.{{ convolution_reverb_index }}"
 frequency = 140
 
 [configure.module.convolution_reverb_prologue.{{ convolution_reverb_index }}]
-audio_input = "filter.viola"
+# audio_input = "audio_input.viola"
+audio_input = "butterworth_highpass_filter.viola"
 impulse_path = "{{ impulse_path }}"
-fade_in_duration = 4
-fade_out_duration = 3
+fade_in_duration = 3
+fade_out_duration = 4
+
+[configure.module.convolution_reverb_prologue.{{ convolution_reverb_index }}.default_dict]
+balance = {{ default_balance_list[convolution_reverb_index] }}
 
 [configure.module.convolution_reverb_prologue.{{ convolution_reverb_index }}.default_dict.channel_mapping]
 0 = {{ convolution_reverb_index }}
