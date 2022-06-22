@@ -19,12 +19,13 @@
 
 
 {% from 'globals.j2' import
-    impulse_path_list,
+    resonance_configuration_path_list,
     minima_decibel_list,
     maxima_decibel_list,
     resonator_count,
     midi_control_number_offset,
-    default_balance_list
+    default_balance_list,
+    add_envelope_follower_list
 %}
 
 [configure]
@@ -49,7 +50,7 @@ midi_control_number = {{ midi_control_number_offset + midi_control_index }}
 midi_channel = 0
 
 [configure.module.midi_control_input.{{ midi_control_input_name }}.default_dict]
-minima = -80
+minima = -48
 maxima = 12
 {% endfor %}
 
@@ -108,7 +109,7 @@ audio_input = "audio_input.viola"
 feedback = 0.8
 cutoff_frequency = 9000
 
-{% for impulse_path in impulse_path_list %}
+{% for resonance_configuration_path in resonance_configuration_path_list %}
 
 {% set convolution_reverb_index = loop.index - 1 %}
 {% set minima_decibel = minima_decibel_list[convolution_reverb_index] %}
@@ -123,7 +124,8 @@ frequency = 140
 [configure.module.convolution_reverb_prologue.{{ convolution_reverb_index }}]
 # audio_input = "audio_input.viola"
 audio_input = "butterworth_highpass_filter.viola"
-impulse_path = "{{ impulse_path }}"
+resonance_configuration_file_path_list = {{ resonance_configuration_path }}
+add_envelope_follower = {{ add_envelope_follower_list[convolution_reverb_index] }}
 fade_in_duration = 3
 fade_out_duration = 4
 

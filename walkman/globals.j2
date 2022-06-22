@@ -10,20 +10,29 @@
 
 # "impulse_responses/vietnamese_gong_big_2.wav"
 
-{% set impulse_path_list = [
-    "impulse_responses/44100/guitar1.wav",
-    "impulse_responses/44100/piano1.wav",
-    "impulse_responses/44100/gong1.wav",
-    "impulse_responses/44100/metal_gong1.wav",
-    "impulse_responses/44100/bath1.wav"
+{% set resonance_configuration_path_list = [
+    [[1, "resonances/palme-res.txt"]],
+    [
+        [0.142, "resonances/piano0.txt"],
+        [0.381, "resonances/piano1.txt"],
+        [0.034, "resonances/piano2.txt"],
+        [0.021, "resonances/piano3.txt"],
+        [0.027, "resonances/piano4.txt"],
+        [0.013, "resonances/piano5.txt"],
+    ],
+    [[1, "resonances/tam-res.txt"]],
+    [[1, "resonances/metalic-res.txt"]],
+    [[1, "resonances/snare-drum.txt"]],
 ] %}
+
+{% set add_envelope_follower_list = ["false", "false", "false", "false", "true"] %}
 
 {% set default_balance_list = [0.5, 0.5, 0.2, 0.3, 0.3] %}
 
-{% set minima_decibel_list = [-12, -12, -14, -11, -11] %}
-{% set maxima_decibel_list = [12, 6.5, 7, 10, 8] %}
+{% set minima_decibel_list = [-12, -12, -12, -12, -12] %}
+{% set maxima_decibel_list = [7, 15, 12, 12, 12] %}
 
-{% set resonator_count = impulse_path_list|length %}
+{% set resonator_count = resonance_configuration_path_list|length %}
 
 {# The first midi control number for the volume control #}
 {% set midi_control_number_offset = 48 %}
