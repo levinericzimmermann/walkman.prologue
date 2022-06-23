@@ -86,25 +86,26 @@ class ConvolutionReverbPrologue(
             amplitude,
             resonance_configuration_tuple,
         ) in self.resonator_configuration_tuple:
-            resonance_filter_list = [
-                pyo.ComplexRes(
-                    self.audio_input.pyo_object,
-                    decay=decay_rate,
-                    freq=frequency,
-                    mul=amplitude,
-                )
-                for frequency, amplitude, decay_rate in resonance_configuration_tuple
-            ]
-            resonator = sum(resonance_filter_list) * amplitude
-            self.resonator_list.append(resonator)
-            self.internal_pyo_object_list.extend(resonance_filter_list)
+            frequency_list, amplitude_list, decay_list = (
+                list(value_list) for value_list in zip(*resonance_configuration_tuple)
+            )
+            complex_resonator = pyo.ComplexRes(
+                self.audio_input.pyo_object,
+                freq=frequency_list,
+                decay=decay_list,
+                mul=amplitude_list,
+            )
+            complex_resonator_with_applied_amplitude = (
+                complex_resonator.mix(1) * amplitude
+            )
+            self.resonator_list.append(complex_resonator_with_applied_amplitude)
+            self.internal_pyo_object_list.append(complex_resonator)
 
         self.summed_resonator = sum(self.resonator_list) * self.amplitude_signal_to
 
         internal_pyo_object_list = [self.summed_resonator] + self.resonator_list
         if self.add_envelope_follower:
             self.envelope_follower = pyo.Follower(self.audio_input.pyo_object)
-            # self.printer = pyo.Print(self.envelope_follower)
             self.summed_resonator *= self.envelope_follower
             internal_pyo_object_list.append(self.envelope_follower)
 
