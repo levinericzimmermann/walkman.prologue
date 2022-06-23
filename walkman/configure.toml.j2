@@ -71,16 +71,6 @@ audio_input_{{- loop.index -}} = "butterworth_highpass_filter.{{ resonator_index
 {% block output_channel_mapping %}
 {% endblock output_channel_mapping %}
 
-[configure.module.mixer.convolution_reverb.channel_mapping]
-{% for resonator_index in range(resonator_count) %}
-{{ resonator_index }} = {{ resonator_index }}
-{% endfor %}
-
-{% for resonator_index in range(resonator_count) %}
-[configure.module.mixer.convolution_reverb.default_dict.audio_input_{{ resonator_index }}_channel_mapping]
-0 = {{ resonator_index }}
-{% endfor %}
-
 [configure.module.mixer.viola]
 audio_input_0 = "amplification.viola"
 audio_input_1 = "waveguide_reverb.viola"
@@ -91,8 +81,8 @@ audio_input_1 = "waveguide_reverb.viola"
 [configure.module.butterworth_highpass_filter.viola]
 audio_input = "audio_input.viola"
 
-[configure.module.butterworth_highpass_filter.viola.default_dict]
-frequency = 100
+[configure.module.butterworth_highpass_filter_viola_frequency]
+value = 100
 
 [configure.module.amplification.viola]
 decibel = "midi_control_input.amplification"
@@ -105,9 +95,11 @@ fade_out_duration = 4
 decibel = "midi_control_input.amplification_reverb"
 audio_input = "audio_input.viola"
 
-[configure.module.waveguide_reverb.viola.default_dict]
-feedback = 0.8
-cutoff_frequency = 9000
+[configure.module.value.waveguide_reverb_viola_child_feedback]
+value = 0.8
+
+[configure.module.value.waveguide_reverb_viola_child_cutoff_frequency]
+value = 9000
 
 {% for resonance_configuration_path in resonance_configuration_path_list %}
 
@@ -118,8 +110,8 @@ cutoff_frequency = 9000
 decibel = "midi_control_input.convolution_reverb_prologue"
 audio_input = "convolution_reverb_prologue.{{ convolution_reverb_index }}"
 
-[configure.module.butterworth_highpass_filter.{{ convolution_reverb_index }}.default_dict]
-frequency = 140
+[configure.module.value.butterworth_highpass_filter_{{ convolution_reverb_index }}_child_frequency]
+value = 140
 
 [configure.module.convolution_reverb_prologue.{{ convolution_reverb_index }}]
 # audio_input = "audio_input.viola"
@@ -128,9 +120,6 @@ resonance_configuration_file_path_list = {{ resonance_configuration_path }}
 add_envelope_follower = {{ add_envelope_follower_list[convolution_reverb_index] }}
 fade_in_duration = 3
 fade_out_duration = 4
-
-[configure.module.convolution_reverb_prologue.{{ convolution_reverb_index }}.default_dict]
-balance = {{ default_balance_list[convolution_reverb_index] }}
 
 [configure.module.convolution_reverb_prologue.{{ convolution_reverb_index }}.default_dict.channel_mapping]
 0 = {{ convolution_reverb_index }}

@@ -16,6 +16,7 @@ FilePath = str
 
 class ConvolutionReverbPrologue(
     walkman.ModuleWithDecibel,
+    decibel=walkman.AutoSetup(walkman.Parameter),
     audio_input=walkman.Catch(walkman.constants.EMPTY_MODULE_INSTANCE_NAME),
 ):
     def __init__(
@@ -94,7 +95,7 @@ class ConvolutionReverbPrologue(
                 freq=frequency_list,
                 decay=decay_list,
                 mul=amplitude_list,
-            )
+            ).stop()
             complex_resonator_with_applied_amplitude = (
                 complex_resonator.mix(1) * amplitude
             )
@@ -105,7 +106,7 @@ class ConvolutionReverbPrologue(
 
         internal_pyo_object_list = [self.summed_resonator] + self.resonator_list
         if self.add_envelope_follower:
-            self.envelope_follower = pyo.Follower(self.audio_input.pyo_object)
+            self.envelope_follower = pyo.Follower(self.audio_input.pyo_object).stop()
             self.summed_resonator *= self.envelope_follower
             internal_pyo_object_list.append(self.envelope_follower)
 
