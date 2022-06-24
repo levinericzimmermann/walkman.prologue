@@ -104,6 +104,8 @@ value = 6000
 {% set convolution_reverb_index = loop.index - 1 %}
 {% set minima_decibel = minima_decibel_list[convolution_reverb_index] %}
 
+[configure.module.parameter.decibel_{{ convolution_reverb_index }}]
+
 [configure.module.butterworth_highpass_filter.{{ convolution_reverb_index }}]
 decibel = "midi_control_input.convolution_reverb_prologue"
 audio_input = "convolution_reverb_prologue.{{ convolution_reverb_index }}"
@@ -113,6 +115,7 @@ value = 140
 
 [configure.module.convolution_reverb_prologue.{{ convolution_reverb_index }}]
 audio_input = "butterworth_highpass_filter.viola"
+decibel = "parameter.decibel_{{ convolution_reverb_index }}"
 resonance_configuration_file_path_list = {{ resonance_configuration_path }}
 add_envelope_follower = {{ add_envelope_follower_list[convolution_reverb_index] }}
 fade_in_duration = 3
