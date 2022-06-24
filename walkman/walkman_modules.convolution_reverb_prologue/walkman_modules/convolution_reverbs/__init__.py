@@ -12,6 +12,12 @@ Amplitude = float
 DecayRate = float
 ResonatorConfiguration = typing.Tuple[Frequency, Amplitude, DecayRate]
 FilePath = str
+SliceIndex = int
+ResonanceConfigurationFilePathList = typing.List[
+    typing.Union[
+        typing.Tuple[Amplitude, FilePath], typing.Tuple[Amplitude, FilePath, SliceIndex]
+    ]
+]
 
 
 class ConvolutionReverbPrologue(
@@ -21,9 +27,7 @@ class ConvolutionReverbPrologue(
 ):
     def __init__(
         self,
-        resonance_configuration_file_path_list: typing.List[
-            typing.Tuple[Amplitude, FilePath]
-        ],
+        resonance_configuration_file_path_list: ResonanceConfigurationFilePathList,
         add_envelope_follower: bool = False,
         **kwargs
     ):
@@ -37,22 +41,22 @@ class ConvolutionReverbPrologue(
 
     @staticmethod
     def parse_resonance_configuration_file_path_list(
-        resonance_configuration_file_path_list: typing.List[
-            typing.Tuple[Amplitude, FilePath]
-        ]
+        resonance_configuration_file_path_list: ResonanceConfigurationFilePathList,
     ) -> typing.Tuple[
         typing.Tuple[Amplitude, typing.Tuple[ResonatorConfiguration, ...]]
     ]:
         resonator_configuration_list = []
-        for (
-            amplitude,
-            resonance_configuration_file_path,
-        ) in resonance_configuration_file_path_list:
+        for data in resonance_configuration_file_path_list:
+            try:
+                amplitude, resonance_configuration_file_path, slice_index = data
+            except ValueError:
+                amplitude, resonance_configuration_file_path = data
+                slice_index = 1
             resonance_configuration_tuple = (
                 ConvolutionReverbPrologue.parse_resonance_configuration_file(
                     resonance_configuration_file_path
                 )
-            )
+            )[::slice_index]
             resonator_configuration_list.append(
                 (amplitude, resonance_configuration_tuple)
             )
@@ -73,10 +77,10 @@ class ConvolutionReverbPrologue(
                 _, data = configuration_line.replace(";", "").split(",")
             except ValueError:
                 continue
-            frequency, bandwidth, amplitude = (
+            frequency, amplitude, decay = (
                 float(value) for value in filter(bool, data.split(" "))
             )
-            resonance_configuration_list.append((frequency, bandwidth, amplitude))
+            resonance_configuration_list.append((frequency, amplitude, decay))
         # XXX: We need set because in the text files are duplicates.
         return tuple(set(resonance_configuration_list))
 
