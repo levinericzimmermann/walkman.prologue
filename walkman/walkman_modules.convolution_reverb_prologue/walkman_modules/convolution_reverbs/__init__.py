@@ -3,6 +3,7 @@ from __future__ import annotations
 import typing
 
 import pyo
+import sys
 
 import walkman
 
@@ -31,6 +32,7 @@ class ConvolutionReverbPrologue(
         add_envelope_follower: bool = False,
         **kwargs
     ):
+        sys.setcheckinterval(500)
         super().__init__(**kwargs)
         self.add_envelope_follower = add_envelope_follower
         self.resonator_configuration_tuple = (
@@ -100,19 +102,23 @@ class ConvolutionReverbPrologue(
                 decay=decay_list,
                 mul=amplitude_list,
             ).stop()
-            complex_resonator_with_applied_amplitude = (
-                complex_resonator.mix(1) * amplitude
-            )
+            mixed_resonator = complex_resonator.mix(1)
+            if amplitude != 1:
+                complex_resonator_with_applied_amplitude = mixed_resonator * amplitude
+            else:
+                complex_resonator_with_applied_amplitude = mixed_resonator
             self.resonator_list.append(complex_resonator_with_applied_amplitude)
             self.internal_pyo_object_list.append(complex_resonator)
 
-        self.summed_resonator = sum(self.resonator_list) * self.amplitude_signal_to
+        self.summed_resonator = sum(self.resonator_list)
 
         internal_pyo_object_list = [self.summed_resonator] + self.resonator_list
         if self.add_envelope_follower:
             self.envelope_follower = pyo.Follower(self.audio_input.pyo_object).stop()
-            self.summed_resonator *= self.envelope_follower
+            self.summed_resonator *= self.envelope_follower * self.amplitude_signal_to
             internal_pyo_object_list.append(self.envelope_follower)
+        else:
+            self.summed_resonator *= self.amplitude_signal_to
 
         self.internal_pyo_object_list.extend(internal_pyo_object_list)
         self._stop()
