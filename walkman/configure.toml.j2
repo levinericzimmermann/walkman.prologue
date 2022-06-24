@@ -59,7 +59,6 @@ send_to_physical_output = true
 audio_input_0 = "mixer.viola"
 {% for resonator_index in range(resonator_count) %}
 audio_input_{{- loop.index -}} = "butterworth_highpass_filter.{{ resonator_index }}"
-# audio_input_{{- loop.index -}} = "convolution_reverb_prologue.{{ resonator_index }}"
 {% endfor %}
 
 {% for channel_index in range(resonator_count) %}
@@ -96,10 +95,10 @@ decibel = "midi_control_input.amplification_reverb"
 audio_input = "audio_input.viola"
 
 [configure.module.value.waveguide_reverb_viola_child_feedback]
-value = 0.8
+value = 0.5
 
 [configure.module.value.waveguide_reverb_viola_child_cutoff_frequency]
-value = 9000
+value = 6000
 
 {% for resonance_configuration_path in resonance_configuration_path_list %}
 
@@ -114,7 +113,6 @@ audio_input = "convolution_reverb_prologue.{{ convolution_reverb_index }}"
 value = 140
 
 [configure.module.convolution_reverb_prologue.{{ convolution_reverb_index }}]
-# audio_input = "audio_input.viola"
 audio_input = "butterworth_highpass_filter.viola"
 resonance_configuration_file_path_list = {{ resonance_configuration_path }}
 add_envelope_follower = {{ add_envelope_follower_list[convolution_reverb_index] }}
