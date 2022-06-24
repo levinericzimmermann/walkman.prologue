@@ -13,11 +13,11 @@
 {% set resonance_configuration_path_list = [
     [[1, "resonances/palme-res.txt"]],
     [
-        [0.142, "resonances/piano0.txt", 2],
+        [0.142, "resonances/piano0.txt", 1],
         [0.381, "resonances/piano1.txt", 1],
-        [0.034, "resonances/piano2.txt", 3],
+        [0.034, "resonances/piano2.txt", 2],
         [0.021, "resonances/piano3.txt", 2],
-        [0.027, "resonances/piano4.txt", 2],
+        [0.027, "resonances/piano4.txt", 1],
         [0.013, "resonances/piano5.txt", 3],
     ],
     [[1, "resonances/tam-res.txt"]],
@@ -30,7 +30,7 @@
 {% set default_balance_list = [0.5, 0.5, 0.2, 0.3, 0.3] %}
 
 {% set minima_decibel_list = [-12, -12, -12, -12, -12] %}
-{% set maxima_decibel_list = [7, 15, 12, 12, 12] %}
+{% set maxima_decibel_list = [7, 15, 9, 12, 12] %}
 
 {% set resonator_count = resonance_configuration_path_list|length %}
 
