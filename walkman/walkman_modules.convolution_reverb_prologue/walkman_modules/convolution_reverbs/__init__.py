@@ -88,6 +88,11 @@ class ConvolutionReverbPrologue(
 
     def _setup_pyo_object(self):
         super()._setup_pyo_object()
+        # XXX: It's better to apply amplitude on input instead
+        # on resonators, for less sudden fade in.
+        self.audio_input_with_applied_decibel = (
+            self.audio_input.pyo_object * self.amplitude_signal_to
+        )
         self.resonator_list = []
         for (
             amplitude,
@@ -97,7 +102,7 @@ class ConvolutionReverbPrologue(
                 list(value_list) for value_list in zip(*resonance_configuration_tuple)
             )
             complex_resonator = pyo.ComplexRes(
-                self.audio_input.pyo_object,
+                self.audio_input_with_applied_decibel,
                 freq=frequency_list,
                 decay=decay_list,
                 mul=amplitude_list,
@@ -115,12 +120,12 @@ class ConvolutionReverbPrologue(
         internal_pyo_object_list = [self.summed_resonator] + self.resonator_list
         if self.add_envelope_follower:
             self.envelope_follower = pyo.Follower(self.audio_input.pyo_object).stop()
-            self.summed_resonator *= self.envelope_follower * self.amplitude_signal_to
+            self.summed_resonator *= self.envelope_follower
             internal_pyo_object_list.append(self.envelope_follower)
-        else:
-            self.summed_resonator *= self.amplitude_signal_to
 
-        self.internal_pyo_object_list.extend(internal_pyo_object_list)
+        self.internal_pyo_object_list.extend(
+            internal_pyo_object_list + [self.audio_input_with_applied_decibel]
+        )
         self._stop_without_fader()
 
     @property
