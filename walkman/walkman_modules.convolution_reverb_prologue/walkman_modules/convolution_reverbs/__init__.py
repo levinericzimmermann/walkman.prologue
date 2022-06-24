@@ -121,7 +121,7 @@ class ConvolutionReverbPrologue(
             self.summed_resonator *= self.amplitude_signal_to
 
         self.internal_pyo_object_list.extend(internal_pyo_object_list)
-        self._stop()
+        self._stop_without_fader()
 
     @property
     def _pyo_object(self) -> pyo.PyoObject:
