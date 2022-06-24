@@ -1,4 +1,6 @@
 #!/usr/bin/bash
+sudo cpupower frequency-set -g performance
+sudo sysctl -q vm.swappiness=10
 {{ run_walkman }} &
 echo "Sleep for 2 seconds until simulation starts"
 sleep 2s
