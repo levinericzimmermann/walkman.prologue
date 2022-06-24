@@ -1,0 +1,271 @@
+<!DOCTYPE patchbay>
+<patchbay version="0.9.1" name="perform-prologue-4">
+ <output-sockets>
+  <socket type="jack-audio" exclusive="off" client="system" name="system">
+   <plug>capture_1</plug>
+   <plug>capture_2</plug>
+   <plug>capture_3</plug>
+   <plug>capture_4</plug>
+   <plug>capture_5</plug>
+   <plug>capture_6</plug>
+   <plug>capture_7</plug>
+   <plug>capture_8</plug>
+   <plug>capture_9</plug>
+   <plug>capture_10</plug>
+   <plug>capture_11</plug>
+   <plug>capture_12</plug>
+   <plug>capture_13</plug>
+   <plug>capture_14</plug>
+   <plug>capture_15</plug>
+   <plug>capture_16</plug>
+   <plug>capture_17</plug>
+   <plug>capture_18</plug>
+   <plug>monitor_1</plug>
+   <plug>monitor_2</plug>
+   <plug>monitor_3</plug>
+   <plug>monitor_4</plug>
+   <plug>monitor_5</plug>
+   <plug>monitor_6</plug>
+   <plug>monitor_7</plug>
+   <plug>monitor_8</plug>
+   <plug>monitor_9</plug>
+   <plug>monitor_10</plug>
+   <plug>monitor_11</plug>
+   <plug>monitor_12</plug>
+   <plug>monitor_13</plug>
+   <plug>monitor_14</plug>
+   <plug>monitor_15</plug>
+   <plug>monitor_16</plug>
+   <plug>monitor_17</plug>
+   <plug>monitor_18</plug>
+   <plug>monitor_19</plug>
+   <plug>monitor_20</plug>
+  </socket>
+  <socket type="jack-audio" exclusive="off" client="PulseAudio\ JACK\ Sink" name="PulseAudio JACK Sink">
+   <plug>front\-left</plug>
+   <plug>front\-right</plug>
+  </socket>
+  <socket type="jack-audio" exclusive="off" client="walkman_4" name="walkman_4">
+   <plug>output_1</plug>
+   <plug>output_2</plug>
+   <plug>output_3</plug>
+   <plug>output_4</plug>
+  </socket>
+  <socket type="jack-midi" exclusive="off" client="system" name="system">
+   <plug>midi_capture_1</plug>
+   <plug>midi_capture_2</plug>
+   <plug>midi_capture_3</plug>
+   <plug>midi_capture_4</plug>
+   <plug>midi_capture_5</plug>
+   <plug>midi_capture_6</plug>
+   <plug>midi_capture_7</plug>
+   <plug>midi_capture_8</plug>
+   <plug>midi_capture_9</plug>
+   <plug>midi_capture_10</plug>
+   <plug>midi_capture_11</plug>
+   <plug>midi_capture_12</plug>
+   <plug>midi_capture_13</plug>
+   <plug>midi_capture_14</plug>
+   <plug>midi_capture_15</plug>
+   <plug>midi_capture_16</plug>
+   <plug>midi_capture_17</plug>
+   <plug>midi_capture_18</plug>
+  </socket>
+  <socket type="jack-midi" exclusive="off" client="a2j" name="a2j">
+   <plug>Midi\ Through\ \[14\]\ \(capture\)\:\ Midi\ Through\ Port\-0</plug>
+   <plug>Midi\ Through\ \[14\]\ \(capture\)\:\ Midi\ Through\ Port\-1</plug>
+   <plug>Midi\ Through\ \[14\]\ \(capture\)\:\ Midi\ Through\ Port\-2</plug>
+   <plug>Midi\ Through\ \[14\]\ \(capture\)\:\ Midi\ Through\ Port\-3</plug>
+   <plug>Midi\ Through\ \[14\]\ \(capture\)\:\ Midi\ Through\ Port\-4</plug>
+   <plug>Midi\ Through\ \[14\]\ \(capture\)\:\ Midi\ Through\ Port\-5</plug>
+   <plug>Midi\ Through\ \[14\]\ \(capture\)\:\ Midi\ Through\ Port\-6</plug>
+   <plug>Midi\ Through\ \[14\]\ \(capture\)\:\ Midi\ Through\ Port\-7</plug>
+   <plug>Midi\ Through\ \[14\]\ \(capture\)\:\ Midi\ Through\ Port\-8</plug>
+   <plug>Midi\ Through\ \[14\]\ \(capture\)\:\ Midi\ Through\ Port\-9</plug>
+   <plug>Midi\ Through\ \[14\]\ \(capture\)\:\ Midi\ Through\ Port\-10</plug>
+   <plug>Midi\ Through\ \[14\]\ \(capture\)\:\ Midi\ Through\ Port\-11</plug>
+   <plug>Midi\ Through\ \[14\]\ \(capture\)\:\ Midi\ Through\ Port\-12</plug>
+   <plug>Midi\ Through\ \[14\]\ \(capture\)\:\ Midi\ Through\ Port\-13</plug>
+   <plug>Midi\ Through\ \[14\]\ \(capture\)\:\ Midi\ Through\ Port\-14</plug>
+   <plug>Midi\ Through\ \[14\]\ \(capture\)\:\ Midi\ Through\ Port\-15</plug>
+   <plug>Midi\ Fighter\ Twister\ \[20\]\ \(capture\)\:\ Midi\ Fighter\ Twister\ MIDI\ 1</plug>
+   <plug>Scarlett\ 18i20\ USB\ \[24\]\ \(capture\)\:\ Scarlett\ 18i20\ USB\ MIDI\ 1</plug>
+  </socket>
+  <socket type="jack-midi" exclusive="off" client="walkman_4" name="walkman_4">
+   <plug>output</plug>
+  </socket>
+  <socket type="jack-midi" exclusive="off" client="a2j" name="a2j 2">
+   <plug>Midi\ Fighter\ Twister\ \[20\]\ \(capture\)\:\ Midi\ Fighter\ Twister\ MIDI\ 1</plug>
+  </socket>
+  <socket type="jack-midi" exclusive="off" client="system" name="system 2">
+   <plug>midi_capture_2</plug>
+   <plug>midi_capture_5</plug>
+   <plug>midi_capture_12</plug>
+  </socket>
+  <socket type="jack-midi" exclusive="off" client="a2j" name="a2j 3">
+   <plug>Midi\ Through\ \[14\]\ \(capture\)\:\ Midi\ Through\ Port\-1</plug>
+   <plug>Midi\ Through\ \[14\]\ \(capture\)\:\ Midi\ Through\ Port\-9</plug>
+  </socket>
+  <socket type="jack-midi" exclusive="off" client="system" name="system 3">
+   <plug>midi_capture_5</plug>
+  </socket>
+  <socket type="alsa-midi" exclusive="off" client="Midi\ Through" name="Midi Through">
+   <plug>Midi\ Through\ Port\-0</plug>
+   <plug>Midi\ Through\ Port\-1</plug>
+   <plug>Midi\ Through\ Port\-2</plug>
+   <plug>Midi\ Through\ Port\-3</plug>
+   <plug>Midi\ Through\ Port\-4</plug>
+   <plug>Midi\ Through\ Port\-5</plug>
+   <plug>Midi\ Through\ Port\-6</plug>
+   <plug>Midi\ Through\ Port\-7</plug>
+   <plug>Midi\ Through\ Port\-8</plug>
+   <plug>Midi\ Through\ Port\-9</plug>
+   <plug>Midi\ Through\ Port\-10</plug>
+   <plug>Midi\ Through\ Port\-11</plug>
+   <plug>Midi\ Through\ Port\-12</plug>
+   <plug>Midi\ Through\ Port\-13</plug>
+   <plug>Midi\ Through\ Port\-14</plug>
+   <plug>Midi\ Through\ Port\-15</plug>
+  </socket>
+  <socket type="alsa-midi" exclusive="off" client="Midi\ Fighter\ Twister" name="Midi Fighter Twister">
+   <plug>Midi\ Fighter\ Twister\ MIDI\ 1</plug>
+  </socket>
+  <socket type="alsa-midi" exclusive="off" client="Scarlett\ 18i20\ USB" name="Scarlett 18i20 USB">
+   <plug>Scarlett\ 18i20\ USB\ MIDI\ 1</plug>
+  </socket>
+ </output-sockets>
+ <input-sockets>
+  <socket type="jack-audio" exclusive="off" client="system" name="system">
+   <plug>playback_1</plug>
+   <plug>playback_2</plug>
+   <plug>playback_3</plug>
+   <plug>playback_4</plug>
+   <plug>playback_5</plug>
+   <plug>playback_6</plug>
+   <plug>playback_7</plug>
+   <plug>playback_8</plug>
+   <plug>playback_9</plug>
+   <plug>playback_10</plug>
+   <plug>playback_11</plug>
+   <plug>playback_12</plug>
+   <plug>playback_13</plug>
+   <plug>playback_14</plug>
+   <plug>playback_15</plug>
+   <plug>playback_16</plug>
+   <plug>playback_17</plug>
+   <plug>playback_18</plug>
+   <plug>playback_19</plug>
+   <plug>playback_20</plug>
+  </socket>
+  <socket type="jack-audio" exclusive="off" client="PulseAudio\ JACK\ Source" name="PulseAudio JACK Source">
+   <plug>front\-left</plug>
+   <plug>front\-right</plug>
+  </socket>
+  <socket type="jack-audio" exclusive="off" client="walkman_4" name="walkman_4">
+   <plug>input_1</plug>
+   <plug>input_2</plug>
+   <plug>input_3</plug>
+   <plug>input_4</plug>
+  </socket>
+  <socket type="jack-midi" exclusive="off" client="system" name="system">
+   <plug>midi_playback_1</plug>
+   <plug>midi_playback_2</plug>
+   <plug>midi_playback_3</plug>
+   <plug>midi_playback_4</plug>
+   <plug>midi_playback_5</plug>
+   <plug>midi_playback_6</plug>
+   <plug>midi_playback_7</plug>
+   <plug>midi_playback_8</plug>
+   <plug>midi_playback_9</plug>
+   <plug>midi_playback_10</plug>
+   <plug>midi_playback_11</plug>
+   <plug>midi_playback_12</plug>
+   <plug>midi_playback_13</plug>
+   <plug>midi_playback_14</plug>
+   <plug>midi_playback_15</plug>
+   <plug>midi_playback_16</plug>
+   <plug>midi_playback_17</plug>
+   <plug>midi_playback_18</plug>
+  </socket>
+  <socket type="jack-midi" exclusive="off" client="a2j" name="a2j">
+   <plug>Midi\ Through\ \[14\]\ \(playback\)\:\ Midi\ Through\ Port\-0</plug>
+   <plug>Midi\ Through\ \[14\]\ \(playback\)\:\ Midi\ Through\ Port\-1</plug>
+   <plug>Midi\ Through\ \[14\]\ \(playback\)\:\ Midi\ Through\ Port\-2</plug>
+   <plug>Midi\ Through\ \[14\]\ \(playback\)\:\ Midi\ Through\ Port\-3</plug>
+   <plug>Midi\ Through\ \[14\]\ \(playback\)\:\ Midi\ Through\ Port\-4</plug>
+   <plug>Midi\ Through\ \[14\]\ \(playback\)\:\ Midi\ Through\ Port\-5</plug>
+   <plug>Midi\ Through\ \[14\]\ \(playback\)\:\ Midi\ Through\ Port\-6</plug>
+   <plug>Midi\ Through\ \[14\]\ \(playback\)\:\ Midi\ Through\ Port\-7</plug>
+   <plug>Midi\ Through\ \[14\]\ \(playback\)\:\ Midi\ Through\ Port\-8</plug>
+   <plug>Midi\ Through\ \[14\]\ \(playback\)\:\ Midi\ Through\ Port\-9</plug>
+   <plug>Midi\ Through\ \[14\]\ \(playback\)\:\ Midi\ Through\ Port\-10</plug>
+   <plug>Midi\ Through\ \[14\]\ \(playback\)\:\ Midi\ Through\ Port\-11</plug>
+   <plug>Midi\ Through\ \[14\]\ \(playback\)\:\ Midi\ Through\ Port\-12</plug>
+   <plug>Midi\ Through\ \[14\]\ \(playback\)\:\ Midi\ Through\ Port\-13</plug>
+   <plug>Midi\ Through\ \[14\]\ \(playback\)\:\ Midi\ Through\ Port\-14</plug>
+   <plug>Midi\ Through\ \[14\]\ \(playback\)\:\ Midi\ Through\ Port\-15</plug>
+   <plug>Midi\ Fighter\ Twister\ \[20\]\ \(playback\)\:\ Midi\ Fighter\ Twister\ MIDI\ 1</plug>
+   <plug>Scarlett\ 18i20\ USB\ \[24\]\ \(playback\)\:\ Scarlett\ 18i20\ USB\ MIDI\ 1</plug>
+  </socket>
+  <socket type="jack-midi" exclusive="off" client="walkman_4" name="walkman_4">
+   <plug>input</plug>
+  </socket>
+  <socket type="jack-midi" exclusive="off" client="system" name="system 2">
+   <plug>midi_playback_11</plug>
+   <plug>midi_playback_7</plug>
+   <plug>midi_playback_2</plug>
+  </socket>
+  <socket type="jack-midi" exclusive="off" client="system" name="system 3">
+   <plug>midi_playback_2</plug>
+   <plug>midi_playback_2</plug>
+  </socket>
+  <socket type="alsa-midi" exclusive="off" client="Midi\ Through" name="Midi Through">
+   <plug>Midi\ Through\ Port\-0</plug>
+   <plug>Midi\ Through\ Port\-1</plug>
+   <plug>Midi\ Through\ Port\-2</plug>
+   <plug>Midi\ Through\ Port\-3</plug>
+   <plug>Midi\ Through\ Port\-4</plug>
+   <plug>Midi\ Through\ Port\-5</plug>
+   <plug>Midi\ Through\ Port\-6</plug>
+   <plug>Midi\ Through\ Port\-7</plug>
+   <plug>Midi\ Through\ Port\-8</plug>
+   <plug>Midi\ Through\ Port\-9</plug>
+   <plug>Midi\ Through\ Port\-10</plug>
+   <plug>Midi\ Through\ Port\-11</plug>
+   <plug>Midi\ Through\ Port\-12</plug>
+   <plug>Midi\ Through\ Port\-13</plug>
+   <plug>Midi\ Through\ Port\-14</plug>
+   <plug>Midi\ Through\ Port\-15</plug>
+  </socket>
+  <socket type="alsa-midi" exclusive="off" client="Midi\ Fighter\ Twister" name="Midi Fighter Twister">
+   <plug>Midi\ Fighter\ Twister\ MIDI\ 1</plug>
+  </socket>
+  <socket type="alsa-midi" exclusive="off" client="Scarlett\ 18i20\ USB" name="Scarlett 18i20 USB">
+   <plug>Scarlett\ 18i20\ USB\ MIDI\ 1</plug>
+  </socket>
+  <socket type="alsa-midi" exclusive="off" client="a2jmidid" name="a2jmidid">
+   <plug>port</plug>
+  </socket>
+  <socket type="alsa-midi" exclusive="off" client="jack_midi" name="jack_midi">
+   <plug>port</plug>
+  </socket>
+ </input-sockets>
+ <slots/>
+ <cables>
+  <cable type="jack-audio" input="PulseAudio JACK Source" output="system"/>
+  <cable type="jack-audio" input="walkman_4" output="system"/>
+  <cable type="jack-audio" input="system" output="PulseAudio JACK Sink"/>
+  <cable type="jack-audio" input="system" output="walkman_4"/>
+  <cable type="jack-midi" input="walkman_4" output="a2j 2"/>
+  <cable type="jack-midi" input="system 2" output="system 2"/>
+  <cable type="jack-midi" input="system 3" output="a2j 3"/>
+  <cable type="jack-midi" input="a2j" output="system 3"/>
+  <cable type="alsa-midi" input="a2jmidid" output="Midi Through"/>
+  <cable type="alsa-midi" input="jack_midi" output="Midi Through"/>
+  <cable type="alsa-midi" input="a2jmidid" output="Midi Fighter Twister"/>
+  <cable type="alsa-midi" input="jack_midi" output="Midi Fighter Twister"/>
+  <cable type="alsa-midi" input="a2jmidid" output="Scarlett 18i20 USB"/>
+  <cable type="alsa-midi" input="jack_midi" output="Scarlett 18i20 USB"/>
+ </cables>
+</patchbay>
+
