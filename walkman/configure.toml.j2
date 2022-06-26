@@ -40,7 +40,7 @@ input_channel_index = 0
 
 
 {% for midi_control_input_name in [
-    "master", "convolution_reverb_prologue", "amplification", "amplification_reverb"
+    "master", "resonator", "amplification", "amplification_reverb"
 ] %}
 
 {% set midi_control_index = loop.index - 1 %}
@@ -101,27 +101,27 @@ value = 6000
 
 {% for resonance_configuration_path in resonance_configuration_path_list %}
 
-{% set convolution_reverb_index = loop.index - 1 %}
-{% set minima_decibel = minima_decibel_list[convolution_reverb_index] %}
+{% set resonator_index = loop.index - 1 %}
+{% set minima_decibel = minima_decibel_list[resonator_index] %}
 
-[configure.module.parameter.decibel_{{ convolution_reverb_index }}]
+[configure.module.parameter.decibel_{{ resonator_index }}]
 
-[configure.module.butterworth_highpass_filter.{{ convolution_reverb_index }}]
-decibel = "midi_control_input.convolution_reverb_prologue"
-audio_input = "convolution_reverb_prologue.{{ convolution_reverb_index }}"
+[configure.module.butterworth_highpass_filter.{{ resonator_index }}]
+decibel = "midi_control_input.resonator"
+audio_input = "resonator.{{ resonator_index }}"
 
-[configure.module.value.butterworth_highpass_filter_{{ convolution_reverb_index }}_child_frequency]
+[configure.module.value.butterworth_highpass_filter_{{ resonator_index }}_child_frequency]
 value = 140
 
-[configure.module.convolution_reverb_prologue.{{ convolution_reverb_index }}]
+[configure.module.resonator.{{ resonator_index }}]
 audio_input = "butterworth_highpass_filter.viola"
-decibel = "parameter.decibel_{{ convolution_reverb_index }}"
+decibel = "parameter.decibel_{{ resonator_index }}"
 resonance_configuration_file_path_list = {{ resonance_configuration_path }}
-add_envelope_follower = {{ add_envelope_follower_list[convolution_reverb_index] }}
+add_envelope_follower = {{ add_envelope_follower_list[resonator_index] }}
 fade_in_duration = 3
 fade_out_duration = 4
 
-[configure.module.convolution_reverb_prologue.{{ convolution_reverb_index }}.default_dict.decibel]
+[configure.module.resonator.{{ resonator_index }}.default_dict.decibel]
 rise_time = 0.85
 fall_time = 0.85
 

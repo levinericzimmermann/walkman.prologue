@@ -14,7 +14,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 extras_require = {"testing": ["nose"]}
 
 setuptools.setup(
-    name="walkman_modules.convolution_reverb_prologue",
+    name="walkman_modules.prologue",
     version=VERSION,
     license="GPL",
     long_description=long_description,

@@ -1,6 +1,6 @@
 {% from 'globals.j2' import get_decibel %}
 
 {% for reverb_index in range(5) %}
-[cue.rev{{ reverb_index }}.convolution_reverb_prologue.{{ reverb_index }}]
+[cue.rev{{ reverb_index }}.resonator.{{ reverb_index }}]
 decibel = {{ get_decibel(reverb_index) }}
 {% endfor %}

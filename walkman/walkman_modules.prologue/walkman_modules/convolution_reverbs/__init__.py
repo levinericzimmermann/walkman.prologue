@@ -21,7 +21,7 @@ ResonanceConfigurationFilePathList = typing.List[
 ]
 
 
-class ConvolutionReverbPrologue(
+class Resonator(
     walkman.ModuleWithDecibel,
     decibel=walkman.AutoSetup(walkman.Parameter),
     audio_input=walkman.Catch(walkman.constants.EMPTY_MODULE_INSTANCE_NAME),
@@ -55,7 +55,7 @@ class ConvolutionReverbPrologue(
                 amplitude, resonance_configuration_file_path = data
                 slice_index = 1
             resonance_configuration_tuple = (
-                ConvolutionReverbPrologue.parse_resonance_configuration_file(
+                Resonator.parse_resonance_configuration_file(
                     resonance_configuration_file_path
                 )
             )[::slice_index]
