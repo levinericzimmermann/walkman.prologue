@@ -1,4 +1,4 @@
-{% from 'globals.j2' import get_decibel, rise, fall %}
+{% from 'globals.j2' import get_decibel, rise, fall  %}
 
 # ##################### CUES ################# #
 #
@@ -604,7 +604,7 @@ value = {{ get_decibel(1) }}
 [cue.68.resonator.2.decibel]
 value = {{ get_decibel(2) }}
 
-[cue.68.resonator.4.decibel]
+[cue.68.snare_resonator.4.decibel]
 value = [
     [0, {{- get_decibel(4, 0) -}}],
     [{{- cue_68_part_0_duration -}}, {{- get_decibel(4, 0) -}}],
@@ -839,7 +839,7 @@ value = {{ get_decibel(0) }}
 [cue.91.resonator.3.decibel]
 value = {{ get_decibel(0) }}
 
-[cue.91.resonator.4.decibel]
+[cue.91.snare_resonator.4.decibel]
 value = {{ rise(4, cue_91_duration) }}
 
 
@@ -856,7 +856,7 @@ value = {{ fall(2, 5) }}
 [cue.92.resonator.3.decibel]
 value = {{ fall(3, 10) }}
 
-[cue.92.resonator.4.decibel]
+[cue.92.snare_resonator.4.decibel]
 value = {{ fall(4, 16) }}
 
 
@@ -1010,7 +1010,7 @@ value = {{ get_decibel(2) }}
 [cue.112.resonator.3.decibel]
 value = {{ get_decibel(3) }}
 
-[cue.112.resonator.4.decibel]
+[cue.112.snare_resonator.4.decibel]
 value = {{ rise(4, 4) }}
 
 
@@ -1027,7 +1027,7 @@ value = {{ get_decibel(2) }}
 [cue.113.resonator.3.decibel]
 value = {{ get_decibel(3) }}
 
-[cue.113.resonator.4.decibel]
+[cue.113.snare_resonator.4.decibel]
 value = {{ fall(4, 9) }}
 
 

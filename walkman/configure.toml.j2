@@ -25,7 +25,10 @@
     resonator_count,
     midi_control_number_offset,
     default_balance_list,
-    add_envelope_follower_list
+    module_class_list,
+    snare_resonator_threshold_decibel_minima,
+    snare_resonator_threshold_decibel_maxima,
+    snare_resonator_snare_sample_maxima_amplitude
 %}
 
 [configure]
@@ -43,27 +46,38 @@ input_channel_index = 0
     "master", "resonator", "amplification", "amplification_reverb"
 ] %}
 
-{% set midi_control_index = loop.index - 1 %}
+    {% set midi_control_index = loop.index - 1 %}
 
-[configure.module.midi_control_input.{{ midi_control_input_name }}]
-midi_control_number = {{ midi_control_number_offset + midi_control_index }}
-midi_channel = 0
+    [configure.module.midi_control_input.{{ midi_control_input_name }}]
+    midi_control_number = {{ midi_control_number_offset + midi_control_index }}
+    midi_channel = 0
 
-[configure.module.midi_control_input.{{ midi_control_input_name }}.default_dict]
-minima = -48
-maxima = 12
+    [configure.module.midi_control_input.{{ midi_control_input_name }}.default_dict]
+    minima = -48
+    maxima = 12
+
 {% endfor %}
 
 [configure.module.mixer.master_output]
 send_to_physical_output = true
 audio_input_0 = "mixer.viola"
+
+{# Add resonators to master output #}
 {% for resonator_index in range(resonator_count) %}
-audio_input_{{- loop.index -}} = "butterworth_highpass_filter.{{ resonator_index }}"
+    audio_input_{{- loop.index -}} = "butterworth_highpass_filter.{{ resonator_index }}"
 {% endfor %}
 
+{# Define output channel mapping for resonators #}
 {% for channel_index in range(resonator_count) %}
-[configure.module.mixer.master_output.default_dict.audio_input_{{- loop.index -}}_channel_mapping]
-0 = {{ channel_index }}
+    [configure.module.mixer.master_output.default_dict.audio_input_{{- loop.index -}}_channel_mapping]
+    {# Special treatment for snare resonator #}
+    {% if channel_index == 4 %}
+        {% for special_channel_index in range(resonator_count - 1) %}
+            {{ special_channel_index }} = {{ special_channel_index }}
+        {% endfor %}
+    {% else %}
+        0 = {{ channel_index }}
+    {% endif %}
 {% endfor %}
 
 [configure.module.mixer.master_output.channel_mapping]
@@ -101,29 +115,35 @@ value = 6000
 
 {% for resonance_configuration_path in resonance_configuration_path_list %}
 
-{% set resonator_index = loop.index - 1 %}
-{% set minima_decibel = minima_decibel_list[resonator_index] %}
+    {% set resonator_index = loop.index - 1 %}
+    {% set resonator_class = module_class_list[resonator_index] %}
 
-[configure.module.parameter.decibel_{{ resonator_index }}]
+    [configure.module.parameter.decibel_{{ resonator_index }}]
 
-[configure.module.butterworth_highpass_filter.{{ resonator_index }}]
-decibel = "midi_control_input.resonator"
-audio_input = "resonator.{{ resonator_index }}"
+    [configure.module.butterworth_highpass_filter.{{ resonator_index }}]
+    decibel = "midi_control_input.resonator"
+    audio_input = "{{ resonator_class }}.{{ resonator_index }}"
 
-[configure.module.value.butterworth_highpass_filter_{{ resonator_index }}_child_frequency]
-value = 140
+    [configure.module.value.butterworth_highpass_filter_{{ resonator_index }}_child_frequency]
+    value = 140
 
-[configure.module.resonator.{{ resonator_index }}]
-audio_input = "butterworth_highpass_filter.viola"
-decibel = "parameter.decibel_{{ resonator_index }}"
-resonance_configuration_file_path_list = {{ resonance_configuration_path }}
-add_envelope_follower = {{ add_envelope_follower_list[resonator_index] }}
-fade_in_duration = 3
-fade_out_duration = 4
+    [configure.module.{{ resonator_class }}.{{ resonator_index }}]
+    audio_input = "butterworth_highpass_filter.viola"
+    decibel = "parameter.decibel_{{ resonator_index }}"
+    resonance_configuration_file_path_list = {{ resonance_configuration_path }}
+    fade_in_duration = 3
+    fade_out_duration = 4
 
-[configure.module.resonator.{{ resonator_index }}.default_dict.decibel]
-rise_time = 0.85
-fall_time = 0.85
+    {# EXTRA SNARE RESONATOR PARAMETERS #}
+    {% if resonator_class == "snare_resonator" %}
+        threshold_decibel_minima = {{ snare_resonator_threshold_decibel_minima }}
+        threshold_decibel_maxima = {{ snare_resonator_threshold_decibel_maxima }}
+        snare_sample_maxima_amplitude = {{ snare_resonator_snare_sample_maxima_amplitude }}
+    {% endif %}
+
+    [configure.module.{{ resonator_class }}.{{ resonator_index }}.default_dict.decibel]
+    rise_time = 0.85
+    fall_time = 0.85
 
 {% endfor %}
 

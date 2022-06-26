@@ -32,6 +32,8 @@ setuptools.setup(
         "audiowalkman>=0.15.0, <1.0.0",
         # for audio
         "pyo==1.0.4",
+        # for linear interpolation of decibel values
+        "numpy==1.23.0",
     ],
     extras_require=extras_require,
     python_requires="==3.8",
