@@ -22,14 +22,14 @@
     ],
     [[1, "resonances/tam-res.txt"]],
     [[1, "resonances/metalic-res.txt"]],
-    [[0.6, "resonances/snare-drum.txt"]],
+    [[0.385, "resonances/snare-drum.txt"]],
 ] %}
 
 {% set module_class_list = ["resonator", "resonator", "resonator", "resonator", "snare_resonator"] %}
 
-{% set snare_resonator_threshold_decibel_minima = -65 %}
-{% set snare_resonator_threshold_decibel_maxima = -40 %}
-{% set snare_resonator_snare_sample_maxima_amplitude = 1 %}
+{% set snare_resonator_threshold_decibel_minima = -22 %}
+{% set snare_resonator_threshold_decibel_maxima = -6 %}
+{% set snare_resonator_snare_sample_maxima_amplitude = 0.925 %}
 
 {% set minima_decibel_list = [-12, -10, -12, -12, -12] %}
 {% set maxima_decibel_list = [6.5, 19, 9, 12, 12] %}
@@ -38,6 +38,7 @@
 
 {# The first midi control number for the volume control #}
 {% set midi_control_number_offset = 48 %}
+{# set midi_control_number_offset = 1 #}
 
 {%- macro get_decibel(convolution_reverb_index, percentage=100) -%}
     {%- set minima_decibel = minima_decibel_list[convolution_reverb_index] -%}
