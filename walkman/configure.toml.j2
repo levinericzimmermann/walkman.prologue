@@ -38,7 +38,6 @@ name = "prologue"
 channel_count = 4
 
 [configure.module.audio_input.viola]
-decibel = "midi_control_input.master"
 input_channel_index = 0
 
 
@@ -60,6 +59,7 @@ input_channel_index = 0
 
 [configure.module.mixer.master_output]
 send_to_physical_output = true
+decibel = "midi_control_input.master"
 audio_input_0 = "mixer.viola"
 
 {# Add resonators to master output #}
