@@ -172,7 +172,7 @@ class SnareResonator(Resonator):
             )
             for soundfile_table in self.soundfile_table_list
         ]
-        self.mixer = pyo.Mixer(outs=self.SOUNDFILE_COUNT, time=0.005)
+        self.mixer = pyo.Mixer(outs=self.SOUNDFILE_COUNT, time=0.1)
         for soundfile_player_index, soundfile_player in enumerate(
             self.soundfile_player_list
         ):
