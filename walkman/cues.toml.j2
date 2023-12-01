@@ -246,7 +246,7 @@ value = {{ get_decibel(0) }}
 
 
 # CUE 32
-{% set cue_32_duration = 23 %}
+{% set cue_32_duration = 16 %}
 
 [cue.32.resonator.0.decibel]
 value = {{ fall(0, cue_32_duration, after=30) }}
