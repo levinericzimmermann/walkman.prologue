@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+bin/performance-on
+qjackctl --active-patchbay=etc/qjackctl/prologue-performance.xml &
+walkman prologue.toml.j2
+bin/performance-off

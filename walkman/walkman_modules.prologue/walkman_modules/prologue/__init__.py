@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import os
 import typing
-import sys
 
 import numpy as np
 import pyo
@@ -33,8 +32,6 @@ class Resonator(
         resonance_configuration_file_path_list: ResonanceConfigurationFilePathList,
         **kwargs,
     ):
-        # http://ajaxsoundstudio.com/pyodoc/perftips.html#adjust-the-interpreter-s-check-interval
-        sys.setcheckinterval(500)
         super().__init__(**kwargs)
         self.resonator_configuration_tuple = (
             self.parse_resonance_configuration_file_path_list(

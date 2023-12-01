@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+echo "start screenlocker"
+start-screenlocker
+echo "turn on networking/wifi"
+nmcli networking on
+nmcli radio wifi on
+echo "turn on bluetooth"
+rfkill unblock bluetooth
+echo "set to powersave"
+echo powersave | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+echo "normalize likelihood for swapiness"
+sudo sysctl -q vm.swappiness=60

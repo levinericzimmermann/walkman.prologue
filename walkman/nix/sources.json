@@ -1,0 +1,14 @@
+{
+    "mutwo-nix": {
+        "branch": "main",
+        "description": "nix repo for mutwo",
+        "homepage": "",
+        "owner": "mutwo-org",
+        "repo": "mutwo-nix",
+        "rev": "659738ee70b2fe07cfc55c9058b57ee726be3389",
+        "sha256": "0ghi32hrgrg9blzsxxbxsr7dv6hld4abalcxshdi9jy4ya2a7gzk",
+        "type": "tarball",
+        "url": "https://github.com/mutwo-org/mutwo-nix/archive/659738ee70b2fe07cfc55c9058b57ee726be3389.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    }
+}

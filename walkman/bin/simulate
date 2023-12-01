@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-sudo cpupower frequency-set -g performance
-sudo sysctl -q vm.swappiness=10
-{{ run_walkman }} &
+bin/performance-on
+walkman prologue_stereo.toml.j2 &
 echo "Sleep for 2 seconds until simulation starts"
 sleep 2s
 mpv --ao=jack --jack-connect=no --volume=45 prologue-simulation.wav
+bin/performance-off

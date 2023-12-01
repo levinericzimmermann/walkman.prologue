@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+echo "stop screenlocker"
+stop-screenlocker
+echo "turn off networking/wifi"
+nmcli networking off
+nmcli radio wifi off
+echo "turn off bluetooth"
+rfkill block bluetooth
+echo "set to performance"
+echo performance | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+echo "reduce likelihood for swapiness"
+sudo sysctl -q vm.swappiness=10

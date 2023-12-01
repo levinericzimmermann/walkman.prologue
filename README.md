@@ -4,7 +4,11 @@ This is an implementation of live electronics for Griseys Prologue realized in [
 
 ## Installation
 
-Bootstrap buildout and then run `bin/buildout`.
+Just use nix to setup the environment
+
+```bash
+nix-shell shell.nix
+```
 
 ## Dependency
 
